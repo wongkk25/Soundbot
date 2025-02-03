@@ -28,15 +28,17 @@ module.exports = {
 			return acc;
 		};
 
-		const rows = fs.readdirSync(Constants.AssetsFolder)
+		const buttons = fs.readdirSync(Constants.AssetsFolder)
 			.map(buildButton)
 			// TODO support more than 25 sounds at some point
-			.slice(0, NumButtonsPerRowMax * NumRowsMax)
-			.reduce(chunkButton, [])
+			.slice(0, NumButtonsPerRowMax * NumRowsMax);
+
+		const numSounds = buttons.length;
+		const rows = buttons.reduce(chunkButton, [])
 			.map(arr => new ActionRowBuilder().addComponents(arr));
 
 		await interaction.reply({
-			content: 'Click on the corresponding button to play a sound.',
+			content: `Click on the corresponding button to play a sound. Number of sounds: ${numSounds}/${NumButtonsPerRowMax * NumRowsMax}`,
 			components: rows,
 		});
 	},
