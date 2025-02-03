@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } = require('discord.js');
 const fs = require('node:fs');
+const Constants = require('../../constants.js')
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -30,8 +31,7 @@ module.exports = {
     };
 
     const numButtonsMax = 5; // discord limitation per row; 5 rows max for 25 sounds total
-    const folder = `./assets/sounds/sample`; // todo remove sample
-    const rows = fs.readdirSync(folder)
+    const rows = fs.readdirSync(Constants.AssetsFolder)
       .map(getSoundName)
       .map(buildButton)
       .reduce(chunkButton, [])
