@@ -41,6 +41,7 @@ module.exports = {
       const location = `${Constants.AssetsFolder}/${interaction.customId}`
       const resource = createAudioResource(createReadStream(location));
       player.play(resource);
+      await interaction.deferUpdate();
     } else {
       return;
     }
