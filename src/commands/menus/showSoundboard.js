@@ -1,9 +1,5 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const fs = require('node:fs');
-const path = require('path');
-const Config = require('../../src/config')
-
-// TODO for the love of god clean all this shit up
 
 module.exports = {
   data: new SlashCommandBuilder()
