@@ -28,6 +28,8 @@ for (const folder of commandFolders) {
 }
 
 client.on(Events.InteractionCreate, async interaction => {
+  console.log("Registered interaction create");
+  console.log(interaction);
   if (!interaction.isChatInputCommand()) return;
 
   const command = interaction.client.commands.get(interaction.commandName);
@@ -50,6 +52,8 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.on(Events.MessageReactionAdd, (msg) => {
+  console.log("Registered message reaction add");
+  console.log(msg);
   // Keeps audio from playing while bot adds initial reactions
   if (msg.count <= 1) {
     return

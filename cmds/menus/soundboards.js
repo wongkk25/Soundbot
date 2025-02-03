@@ -23,7 +23,7 @@ module.exports = {
       fs.readdirSync(folder).forEach(file => {
         let character = file.split("_")[0]
         let name = file.split("_")[1]
-        let emoji = file.split("_")[2].split('.')[0]
+        let emoji = file.split("_")[3].split('.')[0]
         Sounds[i] = { character, name, emoji }
         i++;
       })
@@ -38,6 +38,8 @@ module.exports = {
       // .setThumbnail(`${GIFS[args]}`)
       // .addFields({ name: '\u200B', value: '\u200B' })
 
+    console.log(Sounds);
+
     // Iterates through the Sounds obj. and append a field to the menu for every sound\
     function BuildMenu() {
       const fields = [
@@ -48,6 +50,7 @@ module.exports = {
         // let character = Sounds[i].character
         let emoji = Sounds[i].emoji;
         let name = Sounds[i].name.split('.')[0];
+        console.log(emoji + ", " + name);
         fields.push({ name: name, value: emoji, inline: true });
       }
       Menu.addFields(fields);
@@ -74,7 +77,7 @@ module.exports = {
 
     // NumberOfSounds()
 
-    console.log(Menu);
+    // console.log(Menu);
 
     message.channel.send({ embeds: [Menu] })
       .then((sentMessage) => {
