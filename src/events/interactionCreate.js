@@ -38,12 +38,18 @@ module.exports = {
 				console.error(`Error: ${error.message}`);
 			});
 
-			connection.subscribe(player);
+			try {
+				connection.subscribe(player);
 
-			const location = `${Constants.AssetsFolder}/${interaction.customId}`;
-			const resource = createAudioResource(createReadStream(location));
-			player.play(resource);
-			await interaction.deferUpdate();
+				const location = `${Constants.AssetsFolder}/${interaction.customId}`;
+				const resource = createAudioResource(createReadStream(location));
+				player.play(resource);
+				await interaction.deferUpdate();
+			}
+			catch (error) {
+				console.error(`Error when button was clicked: ${error}`);
+				await interaction.reply({ content: 'There was an issue playing the sound. The bot is likely not connected. Please try again later.', flags: MessageFlags.Ephemeral });
+			}
 		}
 		else {
 			return;
