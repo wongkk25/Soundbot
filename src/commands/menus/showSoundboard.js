@@ -11,9 +11,10 @@ module.exports = {
     const NumButtonsMax = 5; // per row
     const NumRowsMax = 5;
 
-    const buildButton = (soundName) => {
+    const buildButton = (filename) => {
+      const soundName = filename.split(".")[0];
       return new ButtonBuilder()
-        .setCustomId(soundName)
+        .setCustomId(filename)
         .setLabel(soundName)
         .setStyle(ButtonStyle.Secondary);
     };
