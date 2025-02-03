@@ -66,9 +66,9 @@ client.login(Config.TOKEN)
 client.on('ready', () => {
 
   client.registry
-    .registerGroups([
-      ['soundboards', 'menus']
-    ])
+    // .registerGroups([
+    //   ['soundboards', 'menus']
+    // ])
     .registerDefaults()
     .registerCommandsIn(path.join(__dirname, '../cmds'))
 

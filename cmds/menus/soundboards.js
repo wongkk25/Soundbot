@@ -1,23 +1,15 @@
-const Commando = require('discord.js-commando')
-const Discord = require('discord.js');
+const { Discord, SlashCommandBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const Config = require('../../src/config')
 const GIFS = Config.GIFS;
 
 
-
-module.exports = class EmbedCommand extends Commando.Command {
-  constructor(client) {
-    super(client, {
-      name: 'm',
-      group: 'soundboards',
-      memberName: 'menu',
-      description: 'Creates a menu for each character with a sound folder'
-    })
-  }
-
-  async run(message, args) {
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('sb')
+    .setDescription('Show the soundboard.'),
+  async execute(message) {
     //Instantiates a sounds object to store information about this characters sounds
     let Sounds = new Object();
 
@@ -78,8 +70,5 @@ module.exports = class EmbedCommand extends Commando.Command {
           sentMessage.react(val.emoji)
         })
       })
-
-
   }
-
-}
+};
