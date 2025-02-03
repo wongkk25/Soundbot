@@ -19,7 +19,7 @@ module.exports = {
 		// If there is only 1 member left and a connection is defined, that last member will be the bot
 		// In this case, disconnect to save resources
 		if (numConnectedMembers <= 1 && getVoiceConnection(guildId)) {
-			console.log(`Disconnecting bot from channel ${channel.id}`)
+			console.log(`Disconnecting bot from channel ${channel.id}`);
 			const connection = getVoiceConnection(guildId);
 			connection?.destroy();
 		}
@@ -28,11 +28,11 @@ module.exports = {
 			// Since the event handler runs every time someone connects/disconnects, the connection can already exist
 			// Don't establish another connection in that case
 			if (getVoiceConnection(guildId)) {
-				console.log(`Connection already exists for channel ${channel.id}, guild ${guildId}`)
+				console.log(`Connection already exists for channel ${channel.id}, guild ${guildId}`);
 				return;
 			}
 
-			console.log(`Connecting bot to channel ${channel.id}, guild ${guildId}`)
+			console.log(`Connecting bot to channel ${channel.id}, guild ${guildId}`);
 			joinVoiceChannel({
 				channelId: channel.id,
 				guildId: channel.guildId,
