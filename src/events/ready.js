@@ -1,6 +1,6 @@
 const { Events } = require('discord.js');
 const { channelId } = require('../config.json');
-const { joinVoiceChannel, VoiceConnectionStatus, AudioPlayerStatus } = require('@discordjs/voice');
+const { joinVoiceChannel } = require('@discordjs/voice');
 
 module.exports = {
 	name: Events.ClientReady,

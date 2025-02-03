@@ -1,3 +1,3 @@
 module.exports = {
-  AssetsFolder: './assets/sounds/'
-}
+	AssetsFolder: './assets/sounds/',
+};
