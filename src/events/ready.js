@@ -12,11 +12,11 @@ module.exports = {
 			guildId: channel.guildId,
 			adapterCreator: channel.guild.voiceAdapterCreator,
 		});
-		
-		voiceConnection.on(VoiceConnectionStatus.Ready, (oldState, newState) => {
-			console.log('Connection is in the Ready state!');
+
+		voiceConnection.on('stateChange', (oldState, newState) => {
+			console.log(`Voice connection transitioned from the ${oldState.status} state to the ${newState.status} state`);
 		});
 
-		console.log(`Ready! Logged in as ${client.user.tag}`);
+		console.log(`Bot logged in as ${client.user.tag}`);
 	},
 };
