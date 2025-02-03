@@ -1,78 +1,41 @@
-
 const fs = require('fs');
 const path = require('path');
-const { OpusEncoder } = require('@discordjs/opus');
-const Config = require('./config')
-const Commando = require('discord.js-commando')
-const client = new Commando.CommandoClient({
-  commandPrefix: Config.PREFIX,
-  owner: Config.OWNER
-})
+const { token } = require('./config.json');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 
-    function PlaySoundOverVoiceChannel(VoiceChannel, Location, Name, Description, Emoji){
-        if (fs.existsSync(path.join(__dirname, `../assets/sounds/${Location}/${Location}_${Name}_${Description}_${Emoji}.mp3`))) {
-          VoiceChannel.join().then((connection) => {
-            connection.play(path.join(__dirname, `../assets/sounds/${Location}/${Location}_${Name}_${Description}_${Emoji}.mp3`))
-          })
-        } else {
-          msg.channel.send('Computron can not find the file you are looking for. Its probably your fault though.')
-        }
-      }
-      
-      
-      client.on('messageReactionAdd', (msg) => {
-        // Keeps audio from playing while bot adds initial reactions
-        if( msg.count <= 1 ){
-          return
-        }
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 
-        //Searches through sound object to find sound that matches reaction
-        let CurrentBoard = msg.message.embeds[0].title
-        let CurrentCharacter = CurrentBoard.split(' ')[0]
+client.commands = new Collection();
 
-        let Sounds = {};
+const foldersPath = path.join(__dirname, 'commands');
+const commandFolders = fs.readdirSync(foldersPath);
 
-        function RetreiveAudioClips(msg) {
-          let i = 0;
-          const folder = `./assets/sounds/${CurrentCharacter}`;
-          fs.readdirSync(folder).forEach(file => {
-              let character = file.split("_")[0]
-              let name = file.split("_")[1]
-              let description = file.split("_")[2]
-              let emoji = file.split("_")[3].split('.')[0]
-              Sounds[i] = { character, description, name, emoji }
-              i++;
-          })
-        }
-        RetreiveAudioClips() 
+for (const folder of commandFolders) {
+	const commandsPath = path.join(foldersPath, folder);
+	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	for (const file of commandFiles) {
+		const filePath = path.join(commandsPath, file);
+		const command = require(filePath);
+		// Set a new item in the Collection with the key as the command name and the value as the exported module
+		if ('data' in command && 'execute' in command) {
+			client.commands.set(command.data.name, command);
+		} else {
+			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		}
+	}
+}
 
-        var results = {};
-        var options = Sounds;
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
-        for(i=0; i<Object.keys(options).length; i++) {
-          for(key in options[i]) {
-            if(options[i].emoji === msg.emoji.name) {
-              results = options[i];
-            }
-          }
-        }
-        // Plays sound
-        if(results){
-            const VoiceChannel = client.channels.cache.get(Config.CHANNEL)
-            PlaySoundOverVoiceChannel(VoiceChannel, results.character, results.name, results.description, results.emoji)
-        }
-      })
+for (const file of eventFiles) {
+	const filePath = path.join(eventsPath, file);
+	const event = require(filePath);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+}
 
-client.login(Config.TOKEN)
-client.on('ready', () => {
-
-  client.registry
-    .registerGroups([
-      ['soundboards','menus']
-    ])
-    .registerDefaults()
-    .registerCommandsIn(path.join(__dirname, '../cmds'))
-    
-  console.log(`${client.user.tag} has logged in.`);
-});
-
+client.login(token);
