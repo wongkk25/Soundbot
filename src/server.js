@@ -9,10 +9,10 @@ const client = new Commando.CommandoClient({
   owner: Config.OWNER
 })
 
-    function PlaySoundOverVoiceChannel(VoiceChannel, Location, Name, Description, Emoji){
-        if (fs.existsSync(path.join(__dirname, `../assets/sounds/${Location}/${Name}_${Description}_${Emoji}.mp3`))) {
+    function PlaySoundOverVoiceChannel(VoiceChannel, Location, Name, Emoji){
+        if (fs.existsSync(path.join(__dirname, `../assets/sounds/${Location}/${Name}_${Emoji}.mp3`))) {
           VoiceChannel.join().then((connection) => {
-            connection.play(path.join(__dirname, `../assets/sounds/${Location}/${Name}_${Description}_${Emoji}.mp3`))
+            connection.play(path.join(__dirname, `../assets/sounds/${Location}/${Name}_${Emoji}.mp3`))
           })
         } else {
           msg.channel.send('Computron can not find the file you are looking for. Its probably your fault though.')
@@ -38,9 +38,8 @@ const client = new Commando.CommandoClient({
           fs.readdirSync(folder).forEach(file => {
               let character = file.split("_")[0]
               let name = file.split("_")[1]
-              let description = file.split("_")[2]
-              let emoji = file.split("_")[3].split('.')[0]
-              Sounds[i] = { character, description, name, emoji }
+              let emoji = file.split("_")[2].split('.')[0]
+              Sounds[i] = { character, name, emoji }
               i++;
           })
         }
@@ -59,7 +58,7 @@ const client = new Commando.CommandoClient({
         // Plays sound
         if(results){
             const VoiceChannel = client.channels.cache.get(Config.CHANNEL)
-            PlaySoundOverVoiceChannel(VoiceChannel, results.character, results.name, results.description, results.emoji)
+            PlaySoundOverVoiceChannel(VoiceChannel, results.character, results.name, results.emoji)
         }
       })
 

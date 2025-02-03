@@ -28,9 +28,8 @@ module.exports = class EmbedCommand extends Commando.Command {
             fs.readdirSync(folder).forEach(file => {
                 let character = file.split("_")[0]
                 let name = file.split("_")[1]
-                let description = file.split("_")[2]
-                let emoji = file.split("_")[3].split('.')[0]
-                Sounds[i] = { character, description, name, emoji }
+                let emoji = file.split("_")[2].split('.')[0]
+                Sounds[i] = { character, name, emoji }
                 i++;
             })
         }
@@ -49,9 +48,8 @@ module.exports = class EmbedCommand extends Commando.Command {
             for (i; i < Object.keys(Sounds).length; i++) {
                 let character = Sounds[i].character
                 let emoji = Sounds[i].emoji
-                let description = Sounds[i].description
                 let name = Sounds[i].name.split('.')[0]
-                Menu.addField(`\`\`\`${emoji} ${name}\`\`\`` , description, true)
+                Menu.addField(`\`\`\`${emoji} ${name}\`\`\`` , true)
             }
         }
 
