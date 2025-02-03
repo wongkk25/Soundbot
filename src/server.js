@@ -10,9 +10,9 @@ const client = new Commando.CommandoClient({
 })
 
     function PlaySoundOverVoiceChannel(VoiceChannel, Location, Name, Description, Emoji){
-        if (fs.existsSync(path.join(__dirname, `../assets/sounds/${Location}/${Location}_${Name}_${Description}_${Emoji}.mp3`))) {
+        if (fs.existsSync(path.join(__dirname, `../assets/sounds/${Location}/${Name}_${Description}_${Emoji}.mp3`))) {
           VoiceChannel.join().then((connection) => {
-            connection.play(path.join(__dirname, `../assets/sounds/${Location}/${Location}_${Name}_${Description}_${Emoji}.mp3`))
+            connection.play(path.join(__dirname, `../assets/sounds/${Location}/${Name}_${Description}_${Emoji}.mp3`))
           })
         } else {
           msg.channel.send('Computron can not find the file you are looking for. Its probably your fault though.')
