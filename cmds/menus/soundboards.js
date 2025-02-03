@@ -11,30 +11,23 @@ module.exports = {
     .setDescription('Show the soundboard.'),
   async execute(message) {
     const listSounds = () => {
-      const sounds = {};
-      let i = 0;
       const folder = `./assets/sounds/sample`; // todo remove sample
-      fs.readdirSync(folder).forEach(file => {
-        let character = file.split("_")[0]
-        let name = file.split("_")[1]
-        let emoji = file.split("_")[3].split('.')[0]
-        sounds[i] = { character, name, emoji }
-        i++;
-      })
-      return sounds;
-    }
+      return fs.readdirSync(folder).map(file => {
+        const name = file.split("_")[1]; // todo update indices
+        const emoji = file.split("_")[3].split('.')[0];
+        return { name, emoji };
+      });
+    };
 
     const buildSoundboardMenu = (sounds) => {
       const buildFields = (sounds) => {
-        const fields = [{ name: '\u200B', value: '\u200B' }];
-        let i = 0;
-        for (i; i < Object.keys(sounds).length; i++) {
-          let emoji = sounds[i].emoji;
-          let name = sounds[i].name.split('.')[0];
-          console.log(emoji + ", " + name);
-          fields.push({ name: name, value: emoji, inline: true });
-        };
-        return fields;
+        const soundFields = sounds.map(sound => {
+          const soundName = sound.name.split('.')[0];
+          console.log(sound.emoji + ", " + soundName);
+          return { name: soundName, value: sound.emoji, inline: true }
+        });
+        const spaceField = { name: '\u200B', value: '\u200B' }
+        return [spaceField].concat(soundFields);
       };
 
       const soundboardMenu = new EmbedBuilder()
@@ -47,7 +40,6 @@ module.exports = {
     }
 
     const sounds = listSounds();
-    console.log(sounds);
     const soundboardMenu = buildSoundboardMenu(sounds);
 
     message.channel.send({ embeds: [soundboardMenu] })
