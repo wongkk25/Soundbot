@@ -7,7 +7,9 @@ module.exports = {
     .setName('sb')
     .setDescription('Show the soundboard.'),
   async execute(interaction) {
-    const NumButtonsMax = 5; // discord limitation per row; 5 rows max for 25 sounds total
+    // discord limitations
+    const NumButtonsMax = 5; // per row
+    const NumRowsMax = 5;
 
     const buildButton = (soundName) => {
       return new ButtonBuilder()
@@ -27,6 +29,7 @@ module.exports = {
 
     const rows = fs.readdirSync(Constants.AssetsFolder)
       .map(buildButton)
+      .slice(0, NumButtonsMax * NumRowsMax) // TODO support more than 25 sounds at some point
       .reduce(chunkButton, [])
       .map(arr => new ActionRowBuilder().addComponents(arr));
 
