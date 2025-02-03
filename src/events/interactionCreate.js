@@ -1,6 +1,6 @@
 const { createReadStream } = require('node:fs');
 const { Events, MessageFlags } = require('discord.js');
-const { createAudioPlayer, createAudioResource, getVoiceConnection } = require('@discordjs/voice');
+const { createAudioPlayer, createAudioResource, getVoiceConnection, AudioPlayerStatus } = require('@discordjs/voice');
 const Constants = require('../constants.js');
 
 module.exports = {
@@ -33,9 +33,12 @@ module.exports = {
 
 			player.on('stateChange', (oldState, newState) => {
 				console.log(`Audio player transitioned from the ${oldState.status} state to the ${newState.status} state`);
+				if (oldState.status == AudioPlayerStatus.Playing && newState.status == AudioPlayerStatus.Idle) {
+					player.stop();
+				}
 			});
 			player.on('error', error => {
-				console.error(`Error: ${error.message}`);
+				console.error(`Audio player error: ${error.message}`);
 			});
 
 			try {
