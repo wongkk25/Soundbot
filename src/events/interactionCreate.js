@@ -51,7 +51,7 @@ module.exports = {
 			}
 			catch (error) {
 				console.error(`Error when button was clicked: ${error}`);
-				await interaction.reply({ content: 'There was an issue playing the sound. The bot is likely not connected. Please try again later.', flags: MessageFlags.Ephemeral });
+				await interaction.reply({ content: 'There was an issue playing the sound. The bot needs to be connected to the voice channel. Please try again later.', flags: MessageFlags.Ephemeral });
 			}
 		}
 		else {
