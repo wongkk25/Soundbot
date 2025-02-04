@@ -45,8 +45,8 @@ module.exports = {
 			.map(arr => new ActionRowBuilder().addComponents(arr))
 			.reduce(chunkArr(NumRowsMax), []);
 
-		sections.forEach(async rows => {
-			await interaction.followUp({ components: rows, flags: MessageFlags.Ephemeral });
+		sections.forEach(rows => {
+			interaction.followUp({ components: rows, flags: MessageFlags.Ephemeral });
 		});
 	},
 };

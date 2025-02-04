@@ -6,12 +6,7 @@ const { getAudioPlayer } = require('../audioPlayerSingleton.js');
 module.exports = {
 	name: Events.VoiceStateUpdate,
 	async execute(oldState, newState) {
-		const fetchChannel = async (cid, channels) => {
-			return channels.cache.get(cid) ||
-				await channels.fetch(cid);
-		};
-
-		const channel = await fetchChannel(channelId, newState.guild.channels);
+		const channel = await newState.guild.channels.fetch(channelId);
 		const guildId = channel.guild.id;
 		const numConnectedMembers = channel.members?.size || 0;
 
