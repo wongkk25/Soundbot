@@ -1,6 +1,6 @@
 const { createReadStream } = require('node:fs');
 const { Events, MessageFlags } = require('discord.js');
-const { createAudioResource, getVoiceConnection } = require('@discordjs/voice');
+const { createAudioResource, demuxProbe, getVoiceConnection } = require('@discordjs/voice');
 const { channelId } = require('../config.json');
 const Constants = require('../constants.js');
 const audioPlayerManager = require('../audioPlayerSingleton.js');
@@ -31,6 +31,11 @@ module.exports = {
 		}
 		else if (interaction.isButton()) {
 			try {
+				const probeAndCreateResource = async (readableStream) => {
+					const { stream, type } = await demuxProbe(readableStream);
+					return createAudioResource(stream, { inputType: type });
+				}
+
 				if (!getVoiceConnection(interaction.guild.id)) {
 					throw new Error('The bot is not currently connected to a voice channel.');
 				}
@@ -42,7 +47,7 @@ module.exports = {
 
 				const player = audioPlayerManager.getAudioPlayer();
 				const location = `${Constants.AssetsFolder}/${interaction.customId}`;
-				const resource = createAudioResource(createReadStream(location));
+				const resource = await probeAndCreateResource(createReadStream(location));
 				player.play(resource);
 				await interaction.deferUpdate();
 			}
