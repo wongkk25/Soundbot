@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags, SlashCommandBuilder } = require('discord.js');
 const fs = require('node:fs');
 const Constants = require('../../constants.js');
 const { maxNumSounds } = require('../../config.json');
@@ -38,6 +38,7 @@ module.exports = {
 		const numSounds = buttons.length;
 		await interaction.reply({
 			content: `Click on the corresponding button to play a sound. Number of sounds: ${numSounds}`,
+			flags: MessageFlags.Ephemeral,
 		});
 
 		const sections = buttons.reduce(chunkArr(NumButtonsPerRowMax), [])
@@ -45,7 +46,7 @@ module.exports = {
 			.reduce(chunkArr(NumRowsMax), []);
 
 		sections.forEach(async rows => {
-			await interaction.followUp({ components: rows });
+			await interaction.followUp({ components: rows, flags: MessageFlags.Ephemeral });
 		});
 	},
 };
