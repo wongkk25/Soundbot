@@ -14,7 +14,6 @@ module.exports = {
 		const channel = await fetchChannel(channelId, newState.guild.channels);
 		const guildId = channel.guild.id;
 		const numConnectedMembers = channel.members?.size || 0;
-		console.log(channel);
 
 		console.log(`Voice connection transitioned from the ${oldState.status} state to the ${newState.status} state. Number of connected members to channel ${channel.id}: ${numConnectedMembers}`);
 
@@ -40,7 +39,7 @@ module.exports = {
 				guildId: channel.guildId,
 				adapterCreator: channel.guild.voiceAdapterCreator,
 			});
-			channel.subscribe(getAudioPlayer());
+			connection.subscribe(getAudioPlayer());
 		};
 	},
 };

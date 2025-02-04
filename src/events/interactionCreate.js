@@ -1,6 +1,7 @@
 const { createReadStream } = require('node:fs');
 const { Events, MessageFlags } = require('discord.js');
 const { createAudioResource, getVoiceConnection } = require('@discordjs/voice');
+const { channelId } = require('../config.json');
 const Constants = require('../constants.js');
 const audioPlayerManager = require('../audioPlayerSingleton.js');
 
@@ -32,6 +33,11 @@ module.exports = {
 			try {
 				if (!getVoiceConnection(interaction.guild.id)) {
 					throw new Error('The bot is not currently connected to a voice channel.');
+				}
+
+				const channel = interaction.guild.channels.cache.get(channelId);
+				if (!channel.members.has(interaction.user.id)) {
+					throw new Error('You are not currently in the voice channel, you cannot play sounds at this time.');
 				}
 
 				const player = audioPlayerManager.getAudioPlayer();
