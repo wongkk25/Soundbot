@@ -37,7 +37,7 @@ module.exports = {
 
 		const numSounds = buttons.length;
 		await interaction.reply({
-			content: `Click on the corresponding button to play a sound. Number of sounds: ${numSounds}`,
+			content: `Click on the corresponding button to play a sound. Number of avilable sounds: ${numSounds}/${maxNumSounds}`,
 			flags: MessageFlags.Ephemeral,
 		});
 
