@@ -34,7 +34,7 @@ module.exports = {
 				const probeAndCreateResource = async (readableStream) => {
 					const { stream, type } = await demuxProbe(readableStream);
 					return createAudioResource(stream, { inputType: type });
-				}
+				};
 
 				if (!getVoiceConnection(interaction.guild.id)) {
 					throw new Error('The bot is not currently connected to a voice channel.');

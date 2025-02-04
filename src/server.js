@@ -44,7 +44,7 @@ for (const file of eventFiles) {
 }
 
 process.on('SIGINT', async () => {
-	console.log("Caught interrupt signal; shutting everything down");
+	console.log('Caught interrupt signal; shutting everything down');
 	const channel = client.channels.cache.get(channelId);
 	await getVoiceConnection(channel.guild.id)?.destroy();
 	await getAudioPlayer(create = false)?.stop();
