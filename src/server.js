@@ -3,7 +3,7 @@ const path = require('path');
 const process = require('node:process');
 const { channelId, token } = require('./config.json');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const { getAudioPlayer } = require('./audioPlayerSingleton');
+const { getAudioPlayer } = require('./audioPlayerSingleton.js');
 const { getVoiceConnection } = require('@discordjs/voice');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
