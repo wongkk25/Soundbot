@@ -1,7 +1,8 @@
 const { createReadStream } = require('node:fs');
 const { Events, MessageFlags } = require('discord.js');
-const { createAudioPlayer, createAudioResource, getVoiceConnection, AudioPlayerStatus } = require('@discordjs/voice');
+const { createAudioResource, getVoiceConnection } = require('@discordjs/voice');
 const Constants = require('../constants.js');
+const audioPlayerManager = require('../audioPlayerSingleton.js');
 
 module.exports = {
 	name: Events.InteractionCreate,
@@ -28,22 +29,12 @@ module.exports = {
 			}
 		}
 		else if (interaction.isButton()) {
-			const connection = getVoiceConnection(interaction.guildId);
-			const player = createAudioPlayer();
-
-			player.on('stateChange', (oldState, newState) => {
-				console.log(`Audio player transitioned from the ${oldState.status} state to the ${newState.status} state`);
-				if (oldState.status == AudioPlayerStatus.Playing && newState.status == AudioPlayerStatus.Idle) {
-					player.stop();
-				}
-			});
-			player.on('error', error => {
-				console.error(`Audio player error: ${error.message}`);
-			});
-
 			try {
-				connection.subscribe(player);
+				if (!getVoiceConnection(interaction.guild.id)) {
+					throw new Error('The bot is not currently connected to a voice channel.');
+				}
 
+				const player = audioPlayerManager.getAudioPlayer();
 				const location = `${Constants.AssetsFolder}/${interaction.customId}`;
 				const resource = createAudioResource(createReadStream(location));
 				player.play(resource);
@@ -51,7 +42,7 @@ module.exports = {
 			}
 			catch (error) {
 				console.error(`Error when button was clicked: ${error}`);
-				await interaction.reply({ content: 'There was an issue playing the sound. The bot needs to be connected to the voice channel. Please try again later.', flags: MessageFlags.Ephemeral });
+				await interaction.reply({ content: error.toString(), flags: MessageFlags.Ephemeral });
 			}
 		}
 		else {
