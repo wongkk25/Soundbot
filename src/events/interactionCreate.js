@@ -40,7 +40,7 @@ module.exports = {
 					throw new Error('The bot is not currently connected to a voice channel.');
 				}
 
-				const channel = interaction.guild.channels.cache.get(channelId);
+				const channel = await interaction.guild.channels.fetch(channelId);
 				if (!channel.members.has(interaction.user.id)) {
 					throw new Error('You are not currently in the voice channel, you cannot play sounds at this time.');
 				}

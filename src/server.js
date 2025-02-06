@@ -45,9 +45,9 @@ for (const file of eventFiles) {
 
 process.on('SIGINT', async () => {
 	console.log('Caught interrupt signal; shutting everything down');
-	const channel = client.channels.fetch(channelId);
-	await getVoiceConnection(channel.guild.id)?.destroy();
-	await getAudioPlayer(create = false)?.stop();
+	const channel = await client.channels.fetch(channelId);
+	await getVoiceConnection(channel.guildId).destroy();
+	getAudioPlayer(create = false)?.stop();
 	process.exit();
 });
 
