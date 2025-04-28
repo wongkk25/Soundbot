@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const process = require('node:process');
-const { channelId, token } = require('./config.json');
+const { channelId, token } = require('../config.json');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { getVoiceConnection } = require('@discordjs/voice');
 
