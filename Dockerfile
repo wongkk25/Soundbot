@@ -1,8 +1,7 @@
-FROM node:23
+FROM node:alpine
 WORKDIR /usr/local/app
 
-RUN apt-get update
-RUN apt-get install ffmpeg -y
+RUN apk add --no-cache ffmpeg python3
 
 COPY package.json ./package.json
 COPY src ./src
