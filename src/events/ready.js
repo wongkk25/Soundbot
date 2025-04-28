@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { channelId } = require('../config.json');
+const { channelId } = require('../../config.json');
 const { joinVoiceChannel } = require('@discordjs/voice');
 
 module.exports = {
