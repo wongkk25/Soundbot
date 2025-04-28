@@ -1,7 +1,7 @@
 const { createReadStream } = require('node:fs');
 const { Events, MessageFlags } = require('discord.js');
 const { createAudioPlayer, createAudioResource, demuxProbe, getVoiceConnection, AudioPlayerStatus } = require('@discordjs/voice');
-const { channelId } = require('../../config.json');
+const { channelId } = require('../../config/config.json');
 const Constants = require('../constants.js');
 
 module.exports = {
