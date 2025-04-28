@@ -4,4 +4,5 @@ services:
     volumes:
       - ./config:/usr/local/app/config
       - ./sounds:/usr/local/app/assets/sounds
+    restart: unless-stopped
     
