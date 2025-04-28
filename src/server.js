@@ -3,6 +3,7 @@ const path = require('path');
 const process = require('node:process');
 const { channelId, token } = require('./config.json');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { getAudioPlayer } = require('./audioPlayerSingleton.js');
 const { getVoiceConnection } = require('@discordjs/voice');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
@@ -45,7 +46,8 @@ for (const file of eventFiles) {
 process.on('SIGINT', async () => {
 	console.log('Caught interrupt signal; shutting everything down');
 	const channel = await client.channels.fetch(channelId);
-	await getVoiceConnection(channel.guildId)?.destroy();
+	await getVoiceConnection(channel.guildId).destroy();
+	getAudioPlayer(create = false)?.stop();
 	process.exit();
 });
 

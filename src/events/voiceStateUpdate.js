@@ -1,6 +1,7 @@
 const { Events } = require('discord.js');
 const { channelId } = require('../config.json');
 const { getVoiceConnection, joinVoiceChannel } = require('@discordjs/voice');
+const { getAudioPlayer } = require('../audioPlayerSingleton.js');
 
 module.exports = {
 	name: Events.VoiceStateUpdate,
@@ -14,6 +15,7 @@ module.exports = {
 		// In this case, disconnect to save resources
 		if (numConnectedMembers <= 1 && getVoiceConnection(channel.guildId)) {
 			console.log(`Disconnecting bot from channel ${channel.id}`);
+			getAudioPlayer()?.stop();
 			getVoiceConnection(channel.guildId)?.destroy();
 		}
 		// else, connect the bot only if a real user connects first
@@ -26,11 +28,12 @@ module.exports = {
 			}
 
 			console.log(`Connecting bot to channel ${channel.id}, guild ${channel.guildId}`);
-			joinVoiceChannel({
+			const connection = joinVoiceChannel({
 				channelId: channel.id,
 				guildId: channel.guildId,
 				adapterCreator: channel.guild.voiceAdapterCreator,
 			});
+			connection.subscribe(getAudioPlayer());
 		};
 	},
 };
