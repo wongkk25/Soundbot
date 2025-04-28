@@ -1,5 +1,6 @@
 services:
   soundboard-bot:
+    container_name: soundboard-bot
     image: 'twongkk25/soundboard-bot:latest'
     volumes:
       - ./config:/usr/local/app/config
