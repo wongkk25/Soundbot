@@ -1,6 +1,6 @@
 services:
   soundboard-bot:
-    image: 'soundboard-bot:latest'
+    image: 'twongkk25/soundboard-bot:latest'
     volumes:
       - ./config:/usr/local/app/config
       - ./sounds:/usr/local/app/assets/sounds
