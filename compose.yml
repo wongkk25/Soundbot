@@ -1,0 +1,7 @@
+services:
+  soundboard-bot:
+    image: 'soundboard-bot:latest'
+    volumes:
+      - ./config:/usr/local/app/config
+      - ./sounds:/usr/local/app/assets/sounds
+    

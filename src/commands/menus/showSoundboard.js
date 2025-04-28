@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags, SlashCommandBuilder } = require('discord.js');
 const fs = require('node:fs');
 const Constants = require('../../constants.js');
-const { maxNumSounds } = require('../../../config.json');
+const { maxNumSounds } = require('../../../config/config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
